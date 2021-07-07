@@ -482,12 +482,12 @@ return this.labels[index] || "";
                                 line_width=8, line_alpha=1, line_dash='dotted')
         else:
             trade_source.add(trades['EntryBar'], 'entry_xs')
-            trade_source.add(trades['EntryPrice']-10, 'entry_ys')
+            trade_source.add(trades['EntryPrice'], 'entry_ys')
             fig_ohlc.scatter('entry_xs', 'entry_ys', source=trade_source, fill_color='green',
                              marker='triangle', line_color='black', size=12)
 
             trade_source.add(trades['ExitBar'], 'exit_xs')
-            trade_source.add(trades['ExitPrice']+10, 'exit_ys')
+            trade_source.add(trades['ExitPrice'], 'exit_ys')
             fig_ohlc.scatter('exit_xs', 'exit_ys', source=trade_source, fill_color='red',
                              marker='inverted_triangle', line_color='black', size=12)
 
