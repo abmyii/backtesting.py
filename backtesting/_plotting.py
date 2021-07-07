@@ -154,7 +154,7 @@ def plot(*, results: pd.Series,
          plot_volume=True, plot_drawdown=False,
          smooth_equity=False, relative_equity=True,
          superimpose=True, resample=True,
-         reverse_indicators=True,
+         reverse_indicators=True, tractor_beams=True,
          show_legend=True, open_browser=True):
     """
     Like much of GUI code everywhere, this is a mess.
@@ -473,12 +473,23 @@ return this.labels[index] || "";
 
     def _plot_ohlc_trades():
         """Trade entry / exit markers on OHLC plot"""
-        trade_source.add(trades[['EntryBar', 'ExitBar']].values.tolist(), 'position_lines_xs')
-        trade_source.add(trades[['EntryPrice', 'ExitPrice']].values.tolist(), 'position_lines_ys')
-        fig_ohlc.multi_line(xs='position_lines_xs', ys='position_lines_ys',
-                            source=trade_source, line_color=trades_cmap,
-                            legend_label=f'Trades ({len(trades)})',
-                            line_width=8, line_alpha=1, line_dash='dotted')
+        if tractor_beams:
+            trade_source.add(trades[['EntryBar', 'ExitBar']].values.tolist(), 'position_lines_xs')
+            trade_source.add(trades[['EntryPrice', 'ExitPrice']].values.tolist(), 'position_lines_ys')
+            fig_ohlc.multi_line(xs='position_lines_xs', ys='position_lines_ys',
+                                source=trade_source, line_color=trades_cmap,
+                                legend_label=f'Trades ({len(trades)})',
+                                line_width=8, line_alpha=1, line_dash='dotted')
+        else:
+            trade_source.add(trades['EntryBar'], 'entry_xs')
+            trade_source.add(trades['EntryPrice']-10, 'entry_ys')
+            fig_ohlc.scatter('entry_xs', 'entry_ys', source=trade_source, fill_color='green',
+                             marker='triangle', line_color='black', size=12)
+
+            trade_source.add(trades['ExitBar'], 'exit_xs')
+            trade_source.add(trades['ExitPrice']+10, 'exit_ys')
+            fig_ohlc.scatter('exit_xs', 'exit_ys', source=trade_source, fill_color='red',
+                             marker='inverted_triangle', line_color='black', size=12)
 
     def _plot_indicators():
         """Strategy indicators"""

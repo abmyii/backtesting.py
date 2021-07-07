@@ -1624,7 +1624,8 @@ class Backtest:
              smooth_equity=False, relative_equity=True,
              superimpose: Union[bool, str] = True,
              resample=True, reverse_indicators=False,
-             show_legend=True, open_browser=True):
+             tractor_beams=True, show_legend=True,
+             open_browser=True):
         """
         Plot the progression of the last backtest run.
 
@@ -1722,5 +1723,6 @@ class Backtest:
             superimpose=superimpose,
             resample=resample,
             reverse_indicators=reverse_indicators,
+            tractor_beams=tractor_beams,
             show_legend=show_legend,
             open_browser=open_browser)
